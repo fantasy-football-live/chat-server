@@ -4,6 +4,7 @@ var io = require('socket.io')(http);
 var cors = require('cors');
 const PORT = process.env.PORT || 3000;
 
+app.listen(PORT);
 const whitelist = ['http://localhost:8100'];
 
 const corsOptions = {
@@ -35,5 +36,3 @@ io.on('connection', function (socket) {
     console.log(message);
   })
 })
-
-server.listen(PORT);
