@@ -1,10 +1,30 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var cors = require('cors')
+
+const whitelist = ['http://localhost:8100', '*'];
+
+const corsOptions = {
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204
+
+  // credentials: true,
+  // origin: function (origin, callback) {
+  //   if (whitelist.indexOf(origin) !== -1) {
+  //     callback(null, true)
+  //   } else {
+  //     callback(new Error('Not allowed by CORS'))
+  //   }
+  // }
+}
+app.use(cors(corsOptions));
 
 io.on('connection', function (socket) {
   console.log("user connected")
-  socket.on('disconnect', function(){
+  socket.on('disconnect', function () {
     console.log('user disconnected');
   });
 
@@ -14,9 +34,11 @@ io.on('connection', function (socket) {
       text: message.text,
       created: new Date()
     })
+
+    console.log(message);
   })
 })
 
-http.listen(3000, function(){
+http.listen(3000, function () {
   console.log('listening on *:3000');
 });
