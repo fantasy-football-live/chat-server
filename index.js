@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-var cors = require('cors')
+var cors = require('cors');
 
 const whitelist = ['http://localhost:8100', '*'];
 
@@ -16,7 +16,7 @@ const corsOptions = {
   }
 }
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 io.on('connection', function (socket) {
   console.log("user connected")
