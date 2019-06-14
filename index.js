@@ -1,31 +1,15 @@
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
-var cors = require('cors');
+const express = require('express');
+const socketIO = require('socket.io');
+const cors = require('cors');
 const PORT = process.env.PORT || 3000;
+const server = express()
+  .use(cors())
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+const io = socketIO(server);
 
-app.listen(PORT);
-const whitelist = ['http://localhost:8100'];
-
-const corsOptions = {
-  credentials: true,
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-
-app.use(cors(corsOptions));
-
-io.on('connection', function (socket) {
-  console.log("user connected")
-  socket.on('disconnect', function () {
-    console.log('user disconnected');
-  });
-
+io.on('connection', (socket) => {
+  console.log('Client connected');
+  socket.on('disconnect', () => console.log('Client disconnected'));
 
   socket.on('send-message', function (message) {
     io.emit('new-message', {
@@ -35,4 +19,4 @@ io.on('connection', function (socket) {
 
     console.log(message);
   })
-})
+});
