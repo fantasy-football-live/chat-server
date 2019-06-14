@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var cors = require('cors');
+const PORT = process.env.PORT || 3000;
 
 const whitelist = ['http://localhost:8100'];
 
@@ -35,6 +36,4 @@ io.on('connection', function (socket) {
   })
 })
 
-http.listen(3000, function () {
-  console.log('listening on *:3000');
-});
+server.listen(PORT);
