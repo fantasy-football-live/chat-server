@@ -14,7 +14,9 @@ io.on('connection', (socket) => {
   socket.on('send-message', function (message) {
     io.emit('new-message', {
       text: message.text,
-      created: new Date()
+      name: message.name,
+      leagueId: message.leagueId,
+      timestamp: message.timestamp
     })
 
     console.log(message);
